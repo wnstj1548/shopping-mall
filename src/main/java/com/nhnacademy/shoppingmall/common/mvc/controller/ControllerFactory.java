@@ -1,9 +1,13 @@
 package com.nhnacademy.shoppingmall.common.mvc.controller;
 
+import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
+import com.nhnacademy.shoppingmall.common.mvc.exception.ControllerNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,27 +36,78 @@ public class ControllerFactory {
          *  즉 /index.do, /main.do -> IndexController로 맵핑 됩니다.
          */
 
+        for(Class<?> clazz : c) {
+            if(clazz.isAnnotationPresent(RequestMapping.class)) {
+                RequestMapping requestMapping = clazz.getAnnotation(RequestMapping.class);
+                String key = requestMapping.method().name() + "-" + String.join(",",requestMapping.value());
+                Object value = null;
+                try {
+                    value = clazz.getDeclaredConstructor().newInstance();
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                } catch (InstantiationException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException(e);
+                }
+                if (beanMap.containsKey(key)) {
+                    throw new RuntimeException("Duplicate key: " + key);
+                }
+
+                beanMap.put(key, value);
+                log.info("{}", value);
+            }
+        }
 
         //#todo5-2 ctx(ServletContext)에  attribute를 추가합니다. -> key : CONTEXT_CONTROLLER_FACTORY_NAME, value : ControllerFactory
-
+        ctx.setAttribute(CONTEXT_CONTROLLER_FACTORY_NAME, this);
     }
 
     private Object getBean(String key){
         //todo#5-3 beanMap에서 controller 객체를 반환 합니다.
 
-        return null;
+        if (key == null) {
+            throw new IllegalArgumentException("Key cannot be null");
+        }
+
+        return beanMap.getOrDefault(key, null);
     }
 
     public Object getController(HttpServletRequest request){
         //todo#5-4 request의 method, servletPath를 이용해서 Controller 객체를 반환합니다.
 
-        return null;
+        if (request == null) {
+            throw new IllegalArgumentException("Request cannot be null");
+        }
+
+        String method = request.getMethod();
+        String servletPath = request.getServletPath();
+
+        if (method == null || servletPath == null) {
+            throw new IllegalArgumentException("Method or servletPath cannot be null");
+        }
+
+        String key = method + "-" + servletPath;
+
+        return getBean(key);
     }
 
     public Object getController(String method, String path){
         //todo#5-5 method, path를 이용해서 Controller 객체를 반환 합니다.
 
-        return null;
+        if (method == null || path == null) {
+            throw new IllegalArgumentException("Method or path cannot be null");
+        }
+
+        String key = method + "-" + path;
+
+        if (getBean(key) == null) {
+            throw new ControllerNotFoundException(key);
+        }
+
+        return getBean(key);
     }
 
     private String getKey(String method, String path){
@@ -60,6 +115,6 @@ public class ControllerFactory {
         //ex GET-/index.do
         //ex POST-/loginAction.do
 
-        return "";
+        return method + "-" + path;
     }
 }

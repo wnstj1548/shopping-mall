@@ -13,5 +13,4 @@ public interface UserService {
     void deleteUser(String userId);
 
     User doLogin(String userId, String userPassword);
-
 }

@@ -1,15 +1,31 @@
 package com.nhnacademy.shoppingmall.common.mvc.transaction;
 
+import com.nhnacademy.shoppingmall.common.util.DbUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 @Slf4j
 public class DbConnectionThreadLocal {
     private static final ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> sqlErrorThreadLocal = ThreadLocal.withInitial(()->false);
 
-    public static void initialize(){
+    public static void initialize() throws SQLException {
+
+        Connection connection = null;
+
+        try {
+            connection = DbUtils.getDataSource().getConnection();
+
+            connectionThreadLocal.set(connection);
+
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         //todo#2-1 - connection pool에서 connectionThreadLocal에 connection을 할당합니다.
 
@@ -41,5 +57,21 @@ public class DbConnectionThreadLocal {
 
         //todo#2-7 현제 사용하고 있는 connection을 재 사용할 수 없도록 connectionThreadLocal을 초기화 합니다.
 
+            Connection connection = connectionThreadLocal.get();
+            if (connection != null) {
+                try {
+                    if (getSqlError()) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
+                    connection.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    connectionThreadLocal.remove();
+                    sqlErrorThreadLocal.set(false);
+            }
+        }
     }
 }
