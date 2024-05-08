@@ -67,9 +67,19 @@ public class IndexController implements BaseController {
             page = Integer.parseInt(pageParam);
         }
 
+        String categoryId = req.getParameter("categoryId");
+
+        Page<Product> productPage;
+
+        if(categoryId != null) {
+            productPage = productService.getProductByCategoryId(page, pageSize, categoryId);
+        } else {
+            productPage = productService.getAllProduct(page, pageSize);
+        }
+
         List<Category> categoryList = categoryService.getAllCategory();
-        Page<Product> productPage = productService.getAllProduct(page, pageSize);
         List<Product> productList = productPage.getContent();
+        log.info("{}", productPage.getTotalCount());
 
         req.setAttribute("categoryList", categoryList);
         req.setAttribute("productPage", productPage);

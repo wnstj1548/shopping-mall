@@ -54,6 +54,8 @@
 <br><br>
 <div class="pagination justify-content-center">
     <%
+        String categoryId = request.getParameter("categoryId");
+
         int currentPage = 1;
         int totalPages = 1;
 
@@ -61,34 +63,44 @@
             totalPages = (int) Math.ceil((double) productPage.getTotalCount() / 10);  // 총 페이지 수 계산
             currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;  // 현재 페이지
         }
+
+        String link;
+        String previousLink = "?page=" + (currentPage - 1) + (categoryId != null ? "&categoryId=" + categoryId : "");
+        String nextLink = "?page=" + (currentPage + 1) + (categoryId != null ? "&categoryId=" + categoryId : "");
+
+        for (int i = 1; i <= totalPages; i++) {
+            boolean isActive = (i == currentPage);
+
+            if (categoryId != null) {
+                link = "?page=" + i + "&categoryId=" + categoryId;
+            } else {
+                link = "?page=" + i;
+            }
     %>
 
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <% if (currentPage > 1) { %>
-            <li class="page-item">
-                <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span> 이전
-                </a>
-            </li>
-            <% } %>
+<%--            <% if (currentPage > 1) { %>--%>
+<%--            <li class="page-item">--%>
+<%--                <a class="page-link" href="<%= previousLink %>" aria-label="Previous">--%>
+<%--                    <span aria-hidden="true">&laquo;</span> 이전--%>
+<%--                </a>--%>
+<%--            </li>--%>
+<%--            <% } %>--%>
 
-            <%
-                for (int i = 1; i <= totalPages; i++) {
-                    boolean isActive = (i == currentPage);
-            %>
+
             <li class="page-item <%= isActive ? "active" : "" %>">
-                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                <a class="page-link" href="<%= link %>"><%= i %></a>
             </li>
             <% } %>
 
-            <% if (currentPage < totalPages) { %>
-            <li class="page-item">
-                <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
-                    다음 <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            <% } %>
+<%--            <% if (currentPage < totalPages) { %>--%>
+<%--            <li class="page-item">--%>
+<%--                <a class="page-link" href="<%= nextLink %>" aria-label="Next">--%>
+<%--                    다음 <span aria-hidden="true">&raquo;</span>--%>
+<%--                </a>--%>
+<%--            </li>--%>
+<%--            <% } %>--%>
         </ul>
     </nav>
 </div>

@@ -18,7 +18,6 @@ public class CartDeleteController implements BaseController {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
         String cartDeleteProductId = req.getParameter("cartDeleteProductId");
-        log.info("cartDeleteProductId={}", cartDeleteProductId);
         Map<String, Integer> shoppingCart = (Map<String, Integer>) session.getAttribute("shoppingCart");
         if (shoppingCart != null) {
             if(shoppingCart.containsKey(cartDeleteProductId)) {

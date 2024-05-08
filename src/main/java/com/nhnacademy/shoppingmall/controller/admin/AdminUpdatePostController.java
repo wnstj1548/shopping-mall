@@ -2,7 +2,6 @@ package com.nhnacademy.shoppingmall.controller.admin;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
-import com.nhnacademy.shoppingmall.model.category.domain.Category;
 import com.nhnacademy.shoppingmall.model.category.repository.impl.CategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.model.category.service.CategoryService;
 import com.nhnacademy.shoppingmall.model.category.service.impl.CategoryServiceImpl;

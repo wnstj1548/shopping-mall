@@ -30,13 +30,9 @@
                         <li><a href="/index.do" class="nav-link px-2 text-white">Home</a></li>
                         <li><a href="#" class="nav-link px-2 text-white">MyPage</a></li>
                         <c:forEach var="category" items="${categoryList}">
-                            <li><a href="#" class="nav-link px-2 text-white">${category.categoryName}</a></li>
+                            <li><a href="?categoryId=${category.categoryId}" class="nav-link px-2 text-white">${category.categoryName}</a></li>
                         </c:forEach>
                     </ul>
-
-<%--                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">--%>
-<%--                        <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">--%>
-<%--                    </form>--%>
 
                     <a href="/cart.do">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16" transform="translate(-16, 0)">

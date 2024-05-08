@@ -31,10 +31,13 @@
     </c:url>
 
         <form method="post" action="${action}" enctype="multipart/form-data">
-            <div hidden class="form-floating mb-3">
-                <input type="text" class="form-control" name="productId" id="productId" placeholder="상품 아이디" value="${product.productId}" required>
-                <label for="productId">상품 아이디</label>
-            </div>
+
+            <c:if test="${!empty product}">
+                <div hidden class="form-floating mb-3">
+                    <input type="text" class="form-control" name="productId" id="productId" placeholder="상품 아이디" value="${product.productId}" required>
+                    <label for="productId">상품 아이디</label>
+                </div>
+            </c:if>
 
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" name="productName" id="productName" placeholder="상품 이름" value="${product.productName}" required>

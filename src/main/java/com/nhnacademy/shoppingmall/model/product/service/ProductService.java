@@ -15,4 +15,6 @@ public interface ProductService {
     void deleteProduct(String productId);
 
     void saveProduct(Product product);
+
+    Page<Product> getProductByCategoryId(int page, int pageSize, String categoryId);
 }

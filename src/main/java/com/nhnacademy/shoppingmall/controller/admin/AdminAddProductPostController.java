@@ -23,12 +23,6 @@ import java.util.UUID;
 
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/admin/addAction.do")
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 2,
-        maxFileSize = 1024 * 1024 * 20,
-        maxRequestSize = 1024 * 1024 * 200,
-        location = "/Users/kimjunseo/Documents/servlet-jsp-shoppingmall/servlet-jsp-shoppingmall/src/main/webapp/resources/upload/temp"
-)
 public class AdminAddProductPostController implements BaseController {
 
     private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
@@ -52,6 +46,7 @@ public class AdminAddProductPostController implements BaseController {
         String productDetailImagePath = "/resources/upload/" + multipartRequest.getFilesystemName("productDetailImage");
 
         Product product = new Product(productId, productName, productQuantity, productImagePath, productDetailImagePath, productOriginalPrice, productSalePrice, productContent);
+        log.info("product : {}", product);
         productService.saveProduct(product);
 
         String category1 = multipartRequest.getParameter("category1");
