@@ -17,11 +17,8 @@ public class PointThreadInitializer implements ServletContainerInitializer {
         //todo#14-1 servletContext에 requestChannel을 등록합니다.
         ctx.setAttribute("requestChannel", requestChannel);
 
-
         //todo#14-2 WorkerThread 사작합니다.
         WorkerThread workerThread = new WorkerThread(requestChannel);
         workerThread.start();
-
-
     }
 }

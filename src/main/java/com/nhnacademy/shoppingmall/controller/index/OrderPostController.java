@@ -15,6 +15,9 @@ import com.nhnacademy.shoppingmall.model.product.repository.impl.ProductReposito
 import com.nhnacademy.shoppingmall.model.product.service.ProductService;
 import com.nhnacademy.shoppingmall.model.product.service.impl.ProductServiceImpl;
 import com.nhnacademy.shoppingmall.user.domain.User;
+import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
+import com.nhnacademy.shoppingmall.user.service.UserService;
+import com.nhnacademy.shoppingmall.user.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +36,7 @@ public class OrderPostController implements BaseController {
     private final OrderService orderService = new OrderServiceImpl(new OrderRepositoryImpl());
     private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
     private final OrderDetailService orderDetailService = new OrderDetailServiceImpl(new OrderDetailRepositoryImpl());
+    private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -75,6 +79,7 @@ public class OrderPostController implements BaseController {
                 productService.updateProduct(
                         new Product(product.getProductId(), product.getProductName(), product.getProductQuantity() - productCount, product.getProductImage(), product.getProductDetailImage(), product.getProductOriginalPrice(), product.getProductSalePrice(), product.getProductContent())
                 );
+                userService.updateUser(new User(user.getUserId(), user.getUserName(), user.getUserPassword(), user.getUserBirth(), user.getUserAuth(), user.getUserPoint() - product.getProductSalePrice() * productCount, user.getCreatedAt(), user.getLatestLoginAt()));
                 log.info("order : {}, orderDetail : {}", order, orderDetail);
             } else {
                 log.info("재고가 부족합니다.");
