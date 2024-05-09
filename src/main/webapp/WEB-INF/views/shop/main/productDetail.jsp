@@ -32,8 +32,10 @@
                                 <i class="bi-cart-fill me-1"></i>
                                 Add to cart
                             </button>
+                            <br>
                         </div>
                     </form>
+                    <button type="button" onclick="window.location.href='/order.do?productId=${product.productId}'" class="btn btn-success">구매하기</button>
                 </div>
             </div>
         </div>

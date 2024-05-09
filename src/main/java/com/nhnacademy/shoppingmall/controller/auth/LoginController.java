@@ -21,7 +21,6 @@ public class LoginController implements BaseController {
         if(Objects.nonNull(session)) {
             User user = (User) session.getAttribute("user");
             if(Objects.nonNull(user)) {
-                log.info("{}", user.getUserAuth());
                 if(user.getUserAuth() == User.Auth.ROLE_ADMIN) {
                     return "redirect:/admin/main.do";
                 } else {

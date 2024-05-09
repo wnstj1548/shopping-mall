@@ -15,10 +15,10 @@ public class Order {
     private String orderDetailAddress;
     private String orderPhoneNumber;
     private String orderRequest;
-    private String orderCount;
+    private int orderCount;
     private String userId;
 
-    public Order(String orderId, double orderTotalPrice, Timestamp orderDate, String orderStatus, String orderRefund, String orderName, String orderZipcode, String orderAddress, String orderDetailAddress, String orderPhoneNumber, String orderRequest, String orderCount, String userId) {
+    public Order(String orderId, double orderTotalPrice, Timestamp orderDate, String orderStatus, String orderRefund, String orderName, String orderZipcode, String orderAddress, String orderDetailAddress, String orderPhoneNumber, String orderRequest, int orderCount, String userId) {
         this.orderId = orderId;
         this.orderTotalPrice = orderTotalPrice;
         this.orderDate = orderDate;
@@ -78,7 +78,7 @@ public class Order {
         return orderRequest;
     }
 
-    public String getOrderCount() {
+    public int getOrderCount() {
         return orderCount;
     }
 
@@ -130,7 +130,7 @@ public class Order {
         this.orderRequest = orderRequest;
     }
 
-    public void setOrderCount(String orderCount) {
+    public void setOrderCount(int orderCount) {
         this.orderCount = orderCount;
     }
 

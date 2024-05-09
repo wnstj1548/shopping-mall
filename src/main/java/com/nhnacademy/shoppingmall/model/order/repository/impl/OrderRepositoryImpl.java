@@ -38,7 +38,7 @@ public class OrderRepositoryImpl implements OrderRepository {
                         rs.getString("order_detail_address"),
                         rs.getString("order_phone_number"),
                         Objects.nonNull(rs.getString("order_request")) ? rs.getString("order_request") : null,
-                        Objects.nonNull(rs.getString("order_count")) ? rs.getString("order_count") : null,
+                        Objects.nonNull(rs.getString("order_count")) ? rs.getInt("order_count") : null,
                         rs.getString("user_id")
                 );
                 return Optional.of(order);
@@ -78,7 +78,7 @@ public class OrderRepositoryImpl implements OrderRepository {
                         rs.getString("order_detail_address"),
                         rs.getString("order_phone_number"),
                         Objects.nonNull(rs.getString("order_request")) ? rs.getString("order_request") : null,
-                        Objects.nonNull(rs.getString("order_count")) ? rs.getString("order_count") : null,
+                        Objects.nonNull(rs.getString("order_count")) ? rs.getInt("order_count") : null,
                         rs.getString("user_id")
                 );
                 orders.add(order);
@@ -112,7 +112,7 @@ public class OrderRepositoryImpl implements OrderRepository {
                     psmt.setString(9,order.getOrderDetailAddress());
                     psmt.setString(10,order.getOrderPhoneNumber());
                     psmt.setString(11,order.getOrderRequest());
-                    psmt.setString(12,order.getOrderCount());
+                    psmt.setInt(12,order.getOrderCount());
                     psmt.setString(13,order.getUserId());
 
                     return psmt.executeUpdate();
@@ -151,7 +151,7 @@ public class OrderRepositoryImpl implements OrderRepository {
             psmt.setString(8,order.getOrderDetailAddress());
             psmt.setString(9,order.getOrderPhoneNumber());
             psmt.setString(10,order.getOrderRequest());
-            psmt.setString(11,order.getOrderCount());
+            psmt.setInt(11,order.getOrderCount());
             psmt.setString(12,order.getUserId());
             psmt.setString(13,order.getOrderId());
 

@@ -28,7 +28,7 @@ public class AdminAddProductPostController implements BaseController {
     private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
     private final ProductCategoryService productCategoryService = new ProductCateogoryServiceImpl(new ProductCategoryRepositoryImpl());
 
-    private static final String UPLOAD_DIR = "/Users/kimjunseo/Documents/servlet-jsp-shoppingmall/servlet-jsp-shoppingmall/src/main/webapp/resources/upload";
+    private static final String UPLOAD_DIR = "/Users/kimjunseo/Documents/servlet-jsp-shoppingmall/servlet-jsp-shoppingmall/src/main/webapp/resources/";
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -42,11 +42,10 @@ public class AdminAddProductPostController implements BaseController {
         int productOriginalPrice = Integer.parseInt(multipartRequest.getParameter("productOriginalPrice"));
         int productSalePrice = Integer.parseInt(multipartRequest.getParameter("productSalePrice"));
         String productContent = multipartRequest.getParameter("productContent");
-        String productImagePath =  "/resources/upload/" + multipartRequest.getFilesystemName("productImage");
-        String productDetailImagePath = "/resources/upload/" + multipartRequest.getFilesystemName("productDetailImage");
+        String productImagePath =  "/resources/" + multipartRequest.getFilesystemName("productImage");
+        String productDetailImagePath = "/resources/" + multipartRequest.getFilesystemName("productDetailImage");
 
         Product product = new Product(productId, productName, productQuantity, productImagePath, productDetailImagePath, productOriginalPrice, productSalePrice, productContent);
-        log.info("product : {}", product);
         productService.saveProduct(product);
 
         String category1 = multipartRequest.getParameter("category1");

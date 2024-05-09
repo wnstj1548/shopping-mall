@@ -87,7 +87,7 @@
                             <span>Total</span> &nbsp&nbsp
                             <span>${totalPrice}</span>
                         </p>
-                        <a href="#" class="btn btn-primary py-3 px-4">주문하기</a>
+                        <a href="cartOrder.do" class="btn btn-primary py-3 px-4">주문하기</a>
                     </div>
                 </div>
             </div>
