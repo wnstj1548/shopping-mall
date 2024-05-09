@@ -16,4 +16,6 @@ public interface OrderService {
 
     void deleteOrder(String orderId);
 
+    List<Order> getAllOrders();
+
 }

@@ -23,34 +23,24 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th scope="col">주문 내역</th>
-            <th scope="col">주문 날짜</th>
-            <th scope="col">총 가격</th>
-            <th scope="col">주문 상태</th>
-            <th scope="col">받는 사람</th>
-            <th scope="col">받는 사람 주소</th>
-            <th scope="col">받는 사람 상세 주소</th>
-            <th scope="col">받는 사람 폰번호</th>
-            <th scope="col">상세 정보</th>
-        </tr>
+    <tr>
+        <th scope="col">상세 정보</th>
+        <th scope="col">상품 번호</th>
+        <th scope="col">상품 개수</th>
+        <th scope="col">가격</th>
+    </tr>
     </thead>
 
 
     <tbody class="table-group-divider">
-        <c:forEach var="order" items="${orderList}" varStatus="status">
-            <tr>
-                <th scope="row">${status.index + 1}</th>
-                <td>${order.orderDate}</td>
-                <td>${order.orderTotalPrice}</td>
-                <td>${order.orderStatus}</td>
-                <td>${order.orderName}</td>
-                <td>${order.orderAddress}</td>
-                <td>${order.orderDetailAddress}</td>
-                <td>${order.orderPhoneNumber}</td>
-                <td><button type="button" class="btn btn-primary" onclick="window.location.href='/admin/mainDetail.do?orderId=${order.orderId}'" >상세 정보</button></td>
-            </tr>
-        </c:forEach>
+    <c:forEach var="orderDetail" items="${orderDetailList}" varStatus="status">
+        <tr>
+            <th scope="row">${status.index + 1}</th>
+            <td>${orderDetail.productId}</td>
+            <td>${orderDetail.orderDetailCount}</td>
+            <td>${orderDetail.orderDetailPrice}</td>
+        </tr>
+    </c:forEach>
     </tbody>
 </table>
 

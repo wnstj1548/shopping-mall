@@ -41,7 +41,7 @@ public class OrderDetailRepositoryImpl implements OrderDetailRepository {
     @Override
     public List<OrderDetail> findByOrderId(String orderId) {
         Connection connection = DbConnectionThreadLocal.getConnection();
-        String sql = "SELECT * FROM orders_detail WHERE order_detail_id = ?";
+        String sql = "SELECT * FROM orders_detail WHERE order_id = ?";
         ResultSet resultSet = null;
         List<OrderDetail> orderDetails = new ArrayList<>();
 

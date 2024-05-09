@@ -184,4 +184,44 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
         return 0;
     }
+
+    @Override
+    public List<Order> findAll() {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql ="select * from orders";
+        List<Order> orders = new ArrayList <>();
+        ResultSet rs = null;
+
+        try(PreparedStatement psmt = connection.prepareStatement(sql)) {
+            rs = psmt.executeQuery();
+            while(rs.next()){
+                Order order = new Order(
+                        rs.getString("order_id"),
+                        rs.getDouble("order_total_price"),
+                        rs.getTimestamp("order_date"),
+                        Objects.nonNull(rs.getString("order_status")) ? rs.getString("order_status") : null,
+                        Objects.nonNull(rs.getString("order_refund")) ? rs.getString("order_refund") : null,
+                        rs.getString("order_name"),
+                        rs.getString("order_zipcode"),
+                        rs.getString("order_address"),
+                        rs.getString("order_detail_address"),
+                        rs.getString("order_phone_number"),
+                        Objects.nonNull(rs.getString("order_request")) ? rs.getString("order_request") : null,
+                        Objects.nonNull(rs.getString("order_count")) ? rs.getInt("order_count") : null,
+                        rs.getString("user_id")
+                );
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return orders;
+    }
+
 }

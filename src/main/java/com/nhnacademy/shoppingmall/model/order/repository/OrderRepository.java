@@ -14,4 +14,5 @@ public interface OrderRepository {
     int deleteByOrderId(String orderId);
     int update(Order order);
     int countByOrderId(String orderId);
+    List<Order> findAll();
 }
