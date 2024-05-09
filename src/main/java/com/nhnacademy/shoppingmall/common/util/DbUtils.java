@@ -33,12 +33,12 @@ public class DbUtils {
         basicDataSource.setUsername("nhn_academy_12");
         basicDataSource.setPassword("jcR59.XEQFn[ES6o");
 
-        basicDataSource.setInitialSize(2);
-        basicDataSource.setMaxTotal(2);
-        basicDataSource.setMaxIdle(2);
-        basicDataSource.setMinIdle(2);
+        basicDataSource.setInitialSize(5);
+        basicDataSource.setMaxTotal(5);
+        basicDataSource.setMaxIdle(5);
+        basicDataSource.setMinIdle(5);
 
-        basicDataSource.setMaxWait(Duration.ofSeconds(2));
+        basicDataSource.setMaxWait(Duration.ofSeconds(5));
         basicDataSource.setValidationQuery("SELECT 1");
         basicDataSource.setTestOnBorrow(true);
 

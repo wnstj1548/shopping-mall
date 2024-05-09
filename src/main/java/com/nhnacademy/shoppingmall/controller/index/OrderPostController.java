@@ -15,7 +15,6 @@ import com.nhnacademy.shoppingmall.model.product.repository.impl.ProductReposito
 import com.nhnacademy.shoppingmall.model.product.service.ProductService;
 import com.nhnacademy.shoppingmall.model.product.service.impl.ProductServiceImpl;
 import com.nhnacademy.shoppingmall.user.domain.User;
-import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -68,14 +67,22 @@ public class OrderPostController implements BaseController {
         String orderRequest = req.getParameter("orderRequest");
 
         if(userPoint > product.getProductSalePrice() * productCount) {
-
-            Order order = new Order(orderId, product.getProductSalePrice() * productCount, Timestamp.valueOf(LocalDateTime.now()), "주문 처리", null, orderName, orderZipcode, orderAddress, orderDetailAddress, orderPhoneNumber, orderRequest, productCount, userId);
-            OrderDetail orderDetail = new OrderDetail("orderDetail" + UUID.randomUUID(), product.getProductSalePrice() * productCount, productCount, productId, orderId);
-            orderService.saveOrder(order);
-            orderDetailService.saveOrderDetail(orderDetail);
-            log.info("order : {}, orderDetail : {}", order, orderDetail);
+            if(product.getProductQuantity() > productCount) {
+                Order order = new Order(orderId, product.getProductSalePrice() * productCount, Timestamp.valueOf(LocalDateTime.now()), "주문 처리", null, orderName, orderZipcode, orderAddress, orderDetailAddress, orderPhoneNumber, orderRequest, productCount, userId);
+                OrderDetail orderDetail = new OrderDetail("orderDetail" + UUID.randomUUID(), product.getProductSalePrice() * productCount, productCount, productId, orderId);
+                orderService.saveOrder(order);
+                orderDetailService.saveOrderDetail(orderDetail);
+                productService.updateProduct(
+                        new Product(product.getProductId(), product.getProductName(), product.getProductQuantity() - productCount, product.getProductImage(), product.getProductDetailImage(), product.getProductOriginalPrice(), product.getProductSalePrice(), product.getProductContent())
+                );
+                log.info("order : {}, orderDetail : {}", order, orderDetail);
+            } else {
+                log.info("재고가 부족합니다.");
+                return "redirect:/index.do";
+            }
         } else {
             log.info("포인트가 부족합니다.");
+            return "redirect:/index.do";
         }
 
         return "redirect:/index.do";

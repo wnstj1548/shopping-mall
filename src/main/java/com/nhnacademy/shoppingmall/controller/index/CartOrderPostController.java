@@ -15,7 +15,6 @@ import com.nhnacademy.shoppingmall.model.product.repository.impl.ProductReposito
 import com.nhnacademy.shoppingmall.model.product.service.ProductService;
 import com.nhnacademy.shoppingmall.model.product.service.impl.ProductServiceImpl;
 import com.nhnacademy.shoppingmall.user.domain.User;
-import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,16 +81,25 @@ public class CartOrderPostController implements BaseController {
 
 
         if(userPoint > totalPrice) {
-
             Order order = new Order(orderId, totalPrice, Timestamp.valueOf(LocalDateTime.now()), "주문 처리", null, orderName, orderZipcode, orderAddress, orderDetailAddress, orderPhoneNumber, orderRequest, totalCount, userId);
             orderService.saveOrder(order);
 
             for(Product product : productList) {
-                OrderDetail orderDetail = new OrderDetail("orderDetail" + UUID.randomUUID(), product.getProductSalePrice() * shoppingCart.get(product.getProductId()), shoppingCart.get(product.getProductId()), product.getProductId(), orderId);
-                orderDetailService.saveOrderDetail(orderDetail);
+                if(product.getProductQuantity() > shoppingCart.get(product.getProductId())) {
+                    OrderDetail orderDetail = new OrderDetail("orderDetail" + UUID.randomUUID(), product.getProductSalePrice() * shoppingCart.get(product.getProductId()), shoppingCart.get(product.getProductId()), product.getProductId(), orderId);
+                    orderDetailService.saveOrderDetail(orderDetail);
+                    productService.updateProduct(
+                            new Product(product.getProductId(), product.getProductName(), product.getProductQuantity() - shoppingCart.get(product.getProductId()), product.getProductImage(), product.getProductDetailImage(), product.getProductOriginalPrice(), product.getProductSalePrice(), product.getProductContent())
+                    );
+                    session.setAttribute("shoppingCart", new HashMap<>());
+                } else {
+                    log.info("상품 재고가 부족합니다. : {}", product.getProductId());
+                    return "redirect:/index.do";
+                }
             }
         } else {
             log.info("포인트가 부족합니다.");
+            return "redirect:/index.do";
         }
 
         return "redirect:/index.do";

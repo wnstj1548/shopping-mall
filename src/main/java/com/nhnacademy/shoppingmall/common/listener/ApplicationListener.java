@@ -1,5 +1,7 @@
 package com.nhnacademy.shoppingmall.common.listener;
 
+import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
+import com.mysql.cj.jdbc.Driver;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import com.nhnacademy.shoppingmall.user.repository.UserRepository;
@@ -12,8 +14,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Enumeration;
 
 @Slf4j
 @WebListener
@@ -45,6 +49,5 @@ public class ApplicationListener implements ServletContextListener {
         } finally {
             DbConnectionThreadLocal.reset();
         }
-
     }
 }
