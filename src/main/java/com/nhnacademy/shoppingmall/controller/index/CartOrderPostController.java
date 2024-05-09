@@ -10,10 +10,16 @@ import com.nhnacademy.shoppingmall.model.orderDetail.domain.OrderDetail;
 import com.nhnacademy.shoppingmall.model.orderDetail.repository.impl.OrderDetailRepositoryImpl;
 import com.nhnacademy.shoppingmall.model.orderDetail.service.OrderDetailService;
 import com.nhnacademy.shoppingmall.model.orderDetail.service.impl.OrderDetailServiceImpl;
+import com.nhnacademy.shoppingmall.model.pointLog.domain.PointLog;
+import com.nhnacademy.shoppingmall.model.pointLog.repository.impl.PointLogRepositoryImpl;
+import com.nhnacademy.shoppingmall.model.pointLog.service.PointLogService;
+import com.nhnacademy.shoppingmall.model.pointLog.service.impl.PointLogServiceImpl;
 import com.nhnacademy.shoppingmall.model.product.domain.Product;
 import com.nhnacademy.shoppingmall.model.product.repository.impl.ProductRepositoryImpl;
 import com.nhnacademy.shoppingmall.model.product.service.ProductService;
 import com.nhnacademy.shoppingmall.model.product.service.impl.ProductServiceImpl;
+import com.nhnacademy.shoppingmall.thread.channel.RequestChannel;
+import com.nhnacademy.shoppingmall.thread.request.impl.PointChannelRequest;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
 import com.nhnacademy.shoppingmall.user.service.UserService;
@@ -36,6 +42,7 @@ public class CartOrderPostController implements BaseController {
     private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
     private final OrderDetailService orderDetailService = new OrderDetailServiceImpl(new OrderDetailRepositoryImpl());
     private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+    private final PointLogService pointLogService = new PointLogServiceImpl(new PointLogRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -97,6 +104,17 @@ public class CartOrderPostController implements BaseController {
                     );
                     userService.updateUser(new User(user.getUserId(), user.getUserName(), user.getUserPassword(), user.getUserBirth(), user.getUserAuth(), user.getUserPoint() - totalPrice, user.getCreatedAt(), user.getLatestLoginAt()));
                     session.setAttribute("shoppingCart", new HashMap<>());
+                    pointLogService.savePointLog(new PointLog("point" + UUID.randomUUID(), Timestamp.valueOf(LocalDateTime.now()), -totalPrice, user.getUserId()));
+
+                    PointChannelRequest pointChannelRequest = new PointChannelRequest(user.getUserPoint() - totalPrice + (totalPrice/10), user.getUserId());
+                    RequestChannel requestChannel = (RequestChannel) req.getServletContext().getAttribute("requestChannel");
+                    try {
+                        requestChannel.addRequest(pointChannelRequest);
+                        pointLogService.savePointLog(new PointLog("point" + UUID.randomUUID(), Timestamp.valueOf(LocalDateTime.now()), (int)totalPrice/10, user.getUserId()));
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
                 } else {
                     log.info("상품 재고가 부족합니다. : {}", product.getProductId());
                     return "redirect:/index.do";
