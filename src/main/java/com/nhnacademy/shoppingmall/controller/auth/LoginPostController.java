@@ -30,7 +30,6 @@ public class LoginPostController implements BaseController {
             try {
                 User user = userService.doLogin(userId, userPassword);
                 HttpSession session = req.getSession(true);
-                log.info(session.toString());
                 session.setMaxInactiveInterval(3600);
                 session.setAttribute("user", user);
 

@@ -57,7 +57,6 @@ public class ControllerFactory {
                 }
 
                 beanMap.put(key, value);
-                log.info("{}", value);
             }
         }
 

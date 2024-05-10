@@ -51,6 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
         if(categoryRepository.countById(category.getCategoryId()) > 0 ) {
             throw new CategoryAlreadyExistsException(category.getCategoryId());
         }
+        categoryRepository.save(category);
     }
 
     @Override

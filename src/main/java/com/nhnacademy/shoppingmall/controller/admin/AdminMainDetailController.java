@@ -26,7 +26,6 @@ public class AdminMainDetailController implements BaseController {
 
         List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrderId(orderId);
         req.setAttribute("orderDetailList", orderDetails);
-        log.info("orderDetail : {}", orderDetails);
 
         return "/admin/mainDetail";
     }

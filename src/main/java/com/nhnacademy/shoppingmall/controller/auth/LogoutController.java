@@ -18,7 +18,6 @@ public class LogoutController implements BaseController {
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         //todo#13-3 로그아웃 구현
         HttpSession session = req.getSession(false);
-        log.info("{}", session);
 
         if(Objects.nonNull(session)) {
             session.invalidate();

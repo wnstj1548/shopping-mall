@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.model.productCategory.service.impl;
 
+import com.nhnacademy.shoppingmall.model.product.exception.ProductNotFoundException;
 import com.nhnacademy.shoppingmall.model.productCategory.domain.ProductCategory;
 import com.nhnacademy.shoppingmall.model.productCategory.exception.ProductCategoryAlreadyExistsException;
 import com.nhnacademy.shoppingmall.model.productCategory.exception.ProductCategoryNotFoundException;
@@ -25,6 +26,9 @@ public class ProductCateogoryServiceImpl implements ProductCategoryService {
 
     @Override
     public void deletePC(String productId) {
+        if(productCategoryRepository.countByProductId(productId) <= 0){
+            throw new ProductCategoryNotFoundException(productId);
+        }
         productCategoryRepository.delete(productId);
     }
 
