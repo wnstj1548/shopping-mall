@@ -47,16 +47,6 @@ public class IndexController implements BaseController {
             shoppingCart = new HashMap<>();
         }
 
-//        String cartProductId = req.getParameter("cartProductId");
-//        String cartQuantity = req.getParameter("cartQuantity");
-//        if (cartProductId != null) {
-//            int quantity = (cartQuantity != null) ? Integer.parseInt(cartQuantity) : 1;
-//
-//            shoppingCart.put(cartProductId, shoppingCart.getOrDefault(cartProductId, 0) + quantity);
-//
-//            session.setAttribute("shoppingCart", shoppingCart);
-//        }
-
         //페이징 처리
         int page = 1;
         int pageSize = 9;

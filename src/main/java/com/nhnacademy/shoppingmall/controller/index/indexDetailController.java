@@ -55,10 +55,6 @@ public class indexDetailController implements BaseController {
             shoppingCart = new HashMap<>();
         }
 
-        int quantity = 0;
-
-        shoppingCart.put(productId, shoppingCart.getOrDefault(productId, 0) + quantity);
-
         session.setAttribute("shoppingCart", shoppingCart);
         session.setAttribute("recentlyView", recentlyView);
 
