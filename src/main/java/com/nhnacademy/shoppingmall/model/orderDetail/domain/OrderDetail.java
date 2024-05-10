@@ -1,12 +1,27 @@
 package com.nhnacademy.shoppingmall.model.orderDetail.domain;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+
 import java.util.Objects;
 
 public class OrderDetail {
+    @NotNull
     private String orderDetailId;
+
+    @Positive
+    @PositiveOrZero
     private double orderDetailPrice;
+
+    @NotNull
+    @PositiveOrZero
     private int orderDetailCount;
+
+    @NotNull
     private String productId;
+
+    @NotNull
     private String orderId;
 
     public OrderDetail(String orderDetailId, double orderDetailPrice, int orderDetailCount, String productId, String orderId) {

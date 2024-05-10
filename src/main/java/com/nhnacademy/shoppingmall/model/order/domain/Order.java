@@ -1,21 +1,43 @@
 package com.nhnacademy.shoppingmall.model.order.domain;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.sql.Timestamp;
 import java.util.Objects;
 
 public class Order {
+    @NotNull
     private String orderId;
+
+    @NotNull
     private double orderTotalPrice;
+
     private Timestamp orderDate;
+
     private String orderStatus;
+
     private String orderRefund;
+
+    @NotNull
     private String orderName;
+
+    @NotNull
     private String orderZipcode;
+
+    @NotNull
     private String orderAddress;
+
+    @NotNull
     private String orderDetailAddress;
+
+    @NotNull
     private String orderPhoneNumber;
+
     private String orderRequest;
+
     private int orderCount;
+
+    @NotNull
     private String userId;
 
     public Order(String orderId, double orderTotalPrice, Timestamp orderDate, String orderStatus, String orderRefund, String orderName, String orderZipcode, String orderAddress, String orderDetailAddress, String orderPhoneNumber, String orderRequest, int orderCount, String userId) {

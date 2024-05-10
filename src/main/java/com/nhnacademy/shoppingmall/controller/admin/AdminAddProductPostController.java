@@ -12,13 +12,17 @@ import com.nhnacademy.shoppingmall.model.productCategory.service.ProductCategory
 import com.nhnacademy.shoppingmall.model.productCategory.service.impl.ProductCateogoryServiceImpl;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -32,7 +36,9 @@ public class AdminAddProductPostController implements BaseController {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        req.setCharacterEncoding("UTF-8");
+
+//        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+//        Validator validator = validatorFactory.getValidator();
 
         MultipartRequest multipartRequest = new MultipartRequest(req, UPLOAD_DIR, 1024*1024*20,"utf-8",new DefaultFileRenamePolicy());
 
@@ -46,6 +52,17 @@ public class AdminAddProductPostController implements BaseController {
         String productDetailImagePath = "/resources/" + multipartRequest.getFilesystemName("productDetailImage");
 
         Product product = new Product(productId, productName, productQuantity, productImagePath, productDetailImagePath, productOriginalPrice, productSalePrice, productContent);
+
+//        Set<ConstraintViolation<Product>> violations = validator.validate(product);
+
+//        if (!violations.isEmpty()) {
+//            for (ConstraintViolation<Product> violation : violations) {
+//                log.error("Validation error: {}", violation.getMessage());
+//            }
+//            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//            return "/admin/addProductForm";
+//        }
+
         productService.saveProduct(product);
 
         String category1 = multipartRequest.getParameter("category1");

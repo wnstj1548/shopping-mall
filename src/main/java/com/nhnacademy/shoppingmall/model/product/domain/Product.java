@@ -1,15 +1,37 @@
 package com.nhnacademy.shoppingmall.model.product.domain;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+
 import java.util.Objects;
 
 public class Product {
+    @NotNull
     private String productId;
+
+    @NotNull
     private String productName;
+
+    @PositiveOrZero
+    @NotNull
     private int productQuantity;
+
+    @NotNull
     private String productImage;
+
+    @NotNull
     private String productDetailImage;
+
+    @Positive
+    @NotNull
     private int productOriginalPrice;
+
+    @Positive
+    @NotNull
     private int productSalePrice;
+
+    @NotNull
     private String productContent;
 
     public Product(String productId, String productName, int productQuantity, String productImage, String productDetailImage, int productOriginalPrice, int productSalePrice, String productContent) {

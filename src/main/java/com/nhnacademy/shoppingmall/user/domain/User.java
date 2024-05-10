@@ -1,5 +1,10 @@
 package com.nhnacademy.shoppingmall.user.domain;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -8,13 +13,32 @@ public class User {
         ROLE_ADMIN,ROLE_USER
     }
 
+    @NotNull
     private String userId;
+
+    @NotNull
     private String userName;
+
+    @NotNull
+    @Size(min = 8, max = 20, message="비밀번호는 8자 이상이어야 합니다.")
     private String userPassword;
+
+    @NotNull
+    @Size(min = 8, max = 8, message="생년월일은 8자입니다.")
     private String userBirth;
+
+    @NotNull
     private Auth userAuth;
+
+    @PositiveOrZero
+    @NotNull
     private int userPoint;
+
+    @PastOrPresent
+    @NotNull
     private LocalDateTime createdAt;
+
+    @PastOrPresent
     private LocalDateTime latestLoginAt;
 
     public User (String userId, String userName, String userPassword, String userBirth, Auth userAuth, int userPoint, LocalDateTime createdAt, LocalDateTime latestLoginAt ){

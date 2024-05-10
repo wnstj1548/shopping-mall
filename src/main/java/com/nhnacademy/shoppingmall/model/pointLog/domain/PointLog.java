@@ -1,12 +1,26 @@
 package com.nhnacademy.shoppingmall.model.pointLog.domain;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
+
 import java.sql.Timestamp;
 import java.util.Objects;
 
 public class PointLog {
+
+    @NotNull
     private String pointLogId;
+
+    @PastOrPresent
+    @NotNull
     private Timestamp pointDate;
+
+    @PositiveOrZero
+    @NotNull
     private int point;
+
+    @NotNull
     private String userId;
 
     public PointLog(String pointLogId, Timestamp pointDate, int point, String userId) {

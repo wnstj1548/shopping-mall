@@ -1,9 +1,15 @@
 package com.nhnacademy.shoppingmall.model.category.domain;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Objects;
 
 public class Category {
+
+    @NotNull
     private String categoryId;
+
+    @NotNull
     private String categoryName;
 
     public Category(String categoryId, String categoryName) {

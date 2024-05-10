@@ -1,9 +1,14 @@
 package com.nhnacademy.shoppingmall.model.productCategory.domain;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Objects;
 
 public class ProductCategory {
+    @NotNull
     private String productId;
+
+    @NotNull
     private String categoryId;
 
     public ProductCategory(String productId, String categoryId) {
