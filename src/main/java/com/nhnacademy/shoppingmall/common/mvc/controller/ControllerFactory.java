@@ -15,8 +15,11 @@ import java.util.concurrent.ConcurrentMap;
 
 @Slf4j
 public class ControllerFactory {
+
     public static final String CONTEXT_CONTROLLER_FACTORY_NAME="CONTEXT_CONTROLLER_FACTORY";
+
     private final ConcurrentMap<String, Object> beanMap = new ConcurrentHashMap<>();
+
     public void initialize(Set<Class<?>> c, ServletContext ctx){
 
         if(Objects.isNull(c)){
@@ -43,13 +46,8 @@ public class ControllerFactory {
                 Object value = null;
                 try {
                     value = clazz.getDeclaredConstructor().newInstance();
-                } catch (InvocationTargetException e) {
-                    throw new RuntimeException(e);
-                } catch (InstantiationException e) {
-                    throw new RuntimeException(e);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (NoSuchMethodException e) {
+                } catch (InvocationTargetException | IllegalAccessException | InstantiationException |
+                         NoSuchMethodException e) {
                     throw new RuntimeException(e);
                 }
                 if (beanMap.containsKey(key)) {

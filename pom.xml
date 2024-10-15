@@ -50,8 +50,6 @@
             <version>8.2.0</version>
         </dependency>
 
-
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>

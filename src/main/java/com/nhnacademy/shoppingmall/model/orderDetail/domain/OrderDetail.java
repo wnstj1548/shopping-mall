@@ -6,7 +6,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 import java.util.Objects;
 
-public class OrderDetail {
+public class  OrderDetail {
     @NotNull
     private String orderDetailId;
 
